@@ -19,8 +19,7 @@
   "author": "Alex <radist2s@gmail.com>",
   "auto": {
     "plugins": [
-      "npm",
-      "first-time-contributor"
+      "npm"
     ]
   }
 }
