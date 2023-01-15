@@ -8,7 +8,19 @@
   ],
   "type": "module",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "release": "./release.sh"
   },
-  "packageManager": "yarn@3.3.1"
+  "packageManager": "yarn@3.3.1",
+  "devDependencies": {
+    "auto": "^10.37.6"
+  },
+  "repository": "radist2/workspace-test",
+  "author": "Alex <radist2s@gmail.com>",
+  "auto": {
+    "plugins": [
+      "npm",
+      "first-time-contributor"
+    ]
+  }
 }
