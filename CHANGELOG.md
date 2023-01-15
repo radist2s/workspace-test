@@ -1,3 +1,16 @@
+# v1.0.3 (Mon Jan 16 2023)
+
+#### ⚠️ Pushed to `master`
+
+- added some comment for the site (radist2s@gmail.com)
+- removed 'auto' plugin (radist2s@gmail.com)
+
+#### Authors: 1
+
+- Alex Batalov ([@radist2s](https://github.com/radist2s))
+
+---
+
 # v1.0.2 (Mon Jan 16 2023)
 
 #### ⚠️ Pushed to `master`
