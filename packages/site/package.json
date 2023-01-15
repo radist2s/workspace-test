@@ -1,0 +1,13 @@
+{
+  "name": "@radist2s/site",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "@radist2s/app": "workspace:^"
+  }
+}
