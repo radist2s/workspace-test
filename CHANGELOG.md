@@ -2,6 +2,19 @@
 
 #### ⚠️ Pushed to `master`
 
+- added comments (radist2s@gmail.com)
+- lerna conf updated (radist2s@gmail.com)
+
+#### Authors: 1
+
+- Alex Batalov ([@radist2s](https://github.com/radist2s))
+
+---
+
+# (Mon Jan 16 2023)
+
+#### ⚠️ Pushed to `master`
+
 - added comments ([@radist2s](https://github.com/radist2s))
 - lerna conf updated ([@radist2s](https://github.com/radist2s))
 
