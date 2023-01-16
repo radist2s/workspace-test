@@ -13,7 +13,8 @@
   },
   "packageManager": "yarn@3.3.1",
   "devDependencies": {
-    "auto": "^10.37.6"
+    "auto": "^10.37.6",
+    "lerna": "^6.4.1"
   },
   "repository": "radist2/workspace-test",
   "author": "Alex <radist2s@gmail.com>",
