@@ -2,6 +2,25 @@
 
 #### ⚠️ Pushed to `master`
 
+- update package.json (radist2s@gmail.com)
+- manually update version (radist2s@gmail.com)
+- change .gitignore (radist2s@gmail.com)
+- added comments (radist2s@gmail.com)
+- added lerna (radist2s@gmail.com)
+- changed 'auto' config (radist2s@gmail.com)
+- added some comment for the site 4 (radist2s@gmail.com)
+- added lerna config (radist2s@gmail.com)
+
+#### Authors: 1
+
+- Alex Batalov ([@radist2s](https://github.com/radist2s))
+
+---
+
+# v1.0.5 (Mon Jan 16 2023)
+
+#### ⚠️ Pushed to `master`
+
 - change .gitignore (radist2s@gmail.com)
 - added lerna (radist2s@gmail.com)
 - changed 'auto' config (radist2s@gmail.com)
