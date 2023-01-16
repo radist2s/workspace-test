@@ -1,3 +1,15 @@
+# v1.0.4 (Mon Jan 16 2023)
+
+#### ⚠️ Pushed to `master`
+
+- added some comment for the site 3 (radist2s@gmail.com)
+
+#### Authors: 1
+
+- Alex Batalov (radist2s@gmail.com)
+
+---
+
 # v1.0.3 (Mon Jan 16 2023)
 
 #### ⚠️ Pushed to `master`
