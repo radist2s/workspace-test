@@ -1,5 +1,6 @@
 {
   "name": "@radist2s/app",
+  "private": true,
   "version": "1.0.8",
   "main": "index.js",
   "license": "MIT",
