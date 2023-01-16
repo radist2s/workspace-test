@@ -1,5 +1,5 @@
 export PATH=$(npm bin):$PATH
-
+# Comment 1
 VERSION=`auto version`
 
 ## Support for label 'skip-release'
