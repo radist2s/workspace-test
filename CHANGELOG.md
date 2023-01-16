@@ -1,3 +1,16 @@
+# (Mon Jan 16 2023)
+
+#### ⚠️ Pushed to `master`
+
+- added comments (radist2s@gmail.com)
+- lerna conf updated (radist2s@gmail.com)
+
+#### Authors: 1
+
+- Alex Batalov (radist2s@gmail.com)
+
+---
+
 # v1.0.5 (Mon Jan 16 2023)
 
 #### ⚠️ Pushed to `master`
