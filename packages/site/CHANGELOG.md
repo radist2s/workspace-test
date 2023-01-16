@@ -1,5 +1,13 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 1.0.14
+
+### Patch Changes
+
+- d49e4d7: updated GraphQL request
+- Updated dependencies [d49e4d7]
+  - @radist2s/app@1.0.12
+
 #### 🐛 Bug Fix
 
 - Bump version to: v1.0.2 \[skip ci\] (radist2s@gmail.com)
