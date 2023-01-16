@@ -19,7 +19,12 @@
   "author": "Alex <radist2s@gmail.com>",
   "auto": {
     "plugins": [
-      "npm"
+      [
+        "npm",
+        {
+          "exact": true
+        }
+      ]
     ]
   }
 }
