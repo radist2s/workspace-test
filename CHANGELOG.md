@@ -2,6 +2,21 @@
 
 #### ⚠️ Pushed to `master`
 
+- changed 'auto' config (radist2s@gmail.com)
+- added lerna config (radist2s@gmail.com)
+- `@radist2s/site`
+  - added some comment for the site 4 (radist2s@gmail.com)
+
+#### Authors: 1
+
+- Alex Batalov ([@radist2s](https://github.com/radist2s))
+
+---
+
+# v1.0.5 (Mon Jan 16 2023)
+
+#### ⚠️ Pushed to `master`
+
 - added lerna config ([@radist2s](https://github.com/radist2s))
 - `@radist2s/site`
   - added some comment for the site 4 ([@radist2s](https://github.com/radist2s))
