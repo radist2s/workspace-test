@@ -1,3 +1,3 @@
 import {app} from "@radist2s/app"
-// added some comment 5
+// added some comment 6
 console.log('Site', app())
