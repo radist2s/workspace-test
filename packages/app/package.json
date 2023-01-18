@@ -2,7 +2,29 @@
   "name": "@radist2s/app",
   "private": true,
   "version": "1.0.12",
-  "main": "index.js",
+  "WORKSPACE_PACKAGE_DIST_FILES_USAGE_PATCH": {
+    "main": "./_dist/index.js",
+    "exports": {
+      ".": "./_dist/index.js",
+      "./*": "./_dist/*",
+      "./package.json": "./package.json"
+    },
+    "typesVersions": {
+      ">=3.6": {
+        "*": [
+          "./_dist/*"
+        ]
+      }
+    }
+  },
+  "scripts": {
+    "dev": "rimraf ./dist",
+    "foo": "node ./copyDistPackageJson.js"
+  },
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "rimraf": "^4.1.1",
+    "typescript": "^4.9.4"
+  }
 }

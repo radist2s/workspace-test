@@ -5,10 +5,21 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "type": "module",
   "dependencies": {
-    "@radist2s/app": "workspace:^"
+    "@radist2s/app": "workspace:^",
+    "next": "^13.1.2",
+    "next-transpile-modules": "^10.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@types/react": "18.0.26"
   }
 }
