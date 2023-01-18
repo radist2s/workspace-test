@@ -18,14 +18,18 @@
     }
   },
   "scripts": {
-    "dev": "rimraf ./dist",
-    "build": "tsc && node ./copyDistPackageJson.js --create-dist --patch-dist",
-    "clean": "tsc && node ./copyDistPackageJson.js --clean",
+    "dev": "yarn clean",
+    "clean": "rimraf ./_dist && yarn clean:revert-patch-exports",
+    "clean:revert-patch-exports": "node ./copyDistPackageJson.js --revert-dist-exports",
+    "build": "tsc && yarn build:patch-exports",
+    "build:patch-exports": "node ./copyDistPackageJson.js --create-dist --patch-dist-exports",
+    "build:copy-docs": "cpy './*.md' '!_dist/*' _dist",
     "test": "vitest run"
   },
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "cpy-cli": "^4.2.0",
     "rimraf": "^4.1.1",
     "typescript": "^4.9.4",
     "vitest": "^0.27.2"

@@ -71,25 +71,6 @@ async function patchPackageJsonDistExports() {
   );
 }
 
-async function removeDistPackage() {
-  const sourcePackageJsonPath = path.resolve(packagePath, "./package.json");
-  const sourcePackageFields = JSON.parse(
-    await fs.promises.readFile(sourcePackageJsonPath, "utf8")
-  );
-  const {
-    WORKSPACE_PACKAGE_DIST_FILES_USAGE_PATCH: workspacePackagePatchFields,
-  } = sourcePackageFields;
-  if (!workspacePackagePatchFields?.main) {
-    throw new Error(
-      'package.json should contain "WORKSPACE_PACKAGE_DIST_FILES_USAGE_PATCH.main" field'
-    );
-  }
-  const distPackageDir = path.dirname(
-    path.resolve(packagePath, workspacePackagePatchFields.main)
-  );
-  await rimraf(distPackageDir);
-}
-
 export const objectDiff = (glob, matchGlob) => {
   const foo = (globValue, matchGlobValue) => {
     if (typeof globValue === matchGlobValue) {
@@ -177,19 +158,12 @@ async function run() {
   if (process.argv.includes("--create-dist")) {
     await createDistPackageJson();
   }
-  if (process.argv.includes("--patch-dist")) {
+  if (process.argv.includes("--patch-dist-exports")) {
     await patchPackageJsonDistExports();
   }
 
-  if (
-    process.argv.includes("--revert-dist-patch") ||
-    process.argv.includes("--clean")
-  ) {
+  if (process.argv.includes("--revert-dist-exports")) {
     await revertPackageJsonDistExportsFields();
-  }
-
-  if (process.argv.includes("--clean")) {
-    await removeDistPackage();
   }
 }
 
