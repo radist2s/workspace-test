@@ -15,7 +15,9 @@
   "packageManager": "yarn@3.3.1",
   "devDependencies": {
     "auto": "^10.37.6",
-    "lerna": "^6.4.1"
+    "jest": "^29.3.1",
+    "lerna": "^6.4.1",
+    "prettier": "^2.8.3"
   },
   "repository": "radist2/workspace-test",
   "author": "Alex <radist2s@gmail.com>",

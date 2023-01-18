@@ -19,12 +19,19 @@
   },
   "scripts": {
     "dev": "rimraf ./dist",
-    "foo": "node ./copyDistPackageJson.js"
+    "build": "tsc && node ./copyDistPackageJson.js --create-dist --patch-dist",
+    "clean": "tsc && node ./copyDistPackageJson.js --clean",
+    "test": "vitest run"
   },
   "license": "MIT",
   "type": "module",
   "dependencies": {
     "rimraf": "^4.1.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "vitest": "^0.27.2"
+  },
+  "devDependencies": {
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1"
   }
 }
