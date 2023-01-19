@@ -154,6 +154,44 @@ async function revertPackageJsonDistExportsFields() {
   );
 }
 
+async function detectPackageJsonDistExportsField(packageJsonRaw) {
+  const packageFields = JSON.parse(packageJsonRaw);
+  const {
+    WORKSPACE_PACKAGE_DIST_FILES_USAGE_PATCH: packageDistExportsFieldsPatch,
+  } = packageFields;
+  if (
+    !packageDistExportsFieldsPatch ||
+    typeof packageDistExportsFieldsPatch !== "object"
+  ) {
+    throw new Error(
+      'package.json should contain "WORKSPACE_PACKAGE_DIST_FILES_USAGE_PATCH" field object'
+    );
+  }
+
+  const packageJsonAbandonedFields = Object.entries(
+    packageDistExportsFieldsPatch
+  ).reduce((acc, [distExportsField]) => {
+    if (distExportsField in packageFields) {
+      return [...acc, [distExportsField, packageFields[distExportsField]]];
+    }
+    return acc;
+  }, []);
+
+  if (packageJsonAbandonedFields.length) {
+    packageJsonAbandonedFields;
+
+    throw new Error(
+      `"${
+        packageFields.name
+      }" package should not contain fields:\n${JSON.stringify(
+        Object.fromEntries(packageJsonAbandonedFields),
+        null,
+        2
+      )}`
+    );
+  }
+}
+
 async function run() {
   if (process.argv.includes("--create-dist")) {
     await createDistPackageJson();
@@ -164,6 +202,22 @@ async function run() {
 
   if (process.argv.includes("--revert-dist-exports")) {
     await revertPackageJsonDistExportsFields();
+  }
+
+  if (process.argv.includes("--validate-input-package-json")) {
+    const stdin = process.stdin;
+    let inputData = "";
+    stdin.setEncoding("utf8");
+    stdin.on("data", (chunk) => {
+      inputData += chunk;
+    });
+    stdin.on("end", async () => {
+      if (!inputData) throw new Error("StdIN data is empty");
+      await detectPackageJsonDistExportsField(inputData);
+    });
+    stdin.on("error", (error) => {
+      throw error;
+    });
   }
 }
 
