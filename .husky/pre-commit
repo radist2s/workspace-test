@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+##############!/bin/bash
+
+RESTORE='\033[0m'
+RED='\033[00;31m'
+YELLOW='\033[00;33m'
+BLUE='\033[00;34m'
+
+FORBIDDEN=('TODO:' 'DO NOT COMMIT' 'console.log' 'die')
+FOUND=''
+
+for i in $(git diff --cached --name-only); do
+  if [ "$i" == "packages/app/package.json" ]; then
+    # the trick is here...use `git show :file` to output what is staged
+    # test it against each of the FORBIDDEN strings ($j)
+    echo $(git show :$i) | yarn workspace @radist2s/app run precommit:validate-package-json
+  fi
+done
+
+# if FOUND is not empty, REJECT the COMMIT
+# PRINT the results (colorful-like)
+
+if [[ ! -z $FOUND ]]; then
+  printf "${YELLOW}COMMIT REJECTED\n"
+  printf "$FOUND"
+  exit 1
+fi
