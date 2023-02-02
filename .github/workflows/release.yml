@@ -20,8 +20,15 @@ jobs:
         with:
           node-version: 16.x
 
+      - name: Copy Cached Dependencies
+        uses: actions/cache@v3
+        id: cached-dependencies
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install Dependencies
-        run: yarn
+        run: yarn install --immutable
 
       - name: Build Dependencies
         run: yarn build

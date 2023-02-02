@@ -8,6 +8,7 @@
   ],
   "type": "module",
   "scripts": {
+    "build": "yarn workspace @radist2s/app run build",
     "release": "yarn workspace @radist2s/app run build && changeset publish",
     "start": "node src/index.js",
     "prepare": "husky install"
