@@ -34,5 +34,8 @@
   },
   "dependencies": {
     "@changesets/cli": "^2.26.0"
+  },
+  "publishConfig": {
+    "@radist2s:registry": "https://npm.pkg.github.com"
   }
 }
