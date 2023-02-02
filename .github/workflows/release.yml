@@ -20,18 +20,14 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Copy Cached Dependencies
+      - name: Build Dependencies
         uses: actions/cache@v3
         id: cached-dependencies
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install Dependencies
-        run: yarn install --immutable
-
-      - name: Build Dependencies
-        run: yarn build
+      - run: yarn install --immutable
+      - run: yarn build
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
@@ -39,6 +35,7 @@ jobs:
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: yarn release
+          createGithubReleases: false
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
