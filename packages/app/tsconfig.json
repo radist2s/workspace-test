@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./_dist",
+    "outDir": "./dist",
     "module": "ES6",
     "moduleResolution": "Node",
     "target": "ES6",
@@ -11,6 +11,6 @@
   },
   "exclude": [
     "node_modules",
-    "_dist"
+    "dist"
   ]
 }

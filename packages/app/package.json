@@ -2,29 +2,24 @@
   "name": "@radist2s/app",
   "private": true,
   "version": "1.0.12",
-  "WORKSPACE_PACKAGE_DIST_FILES_USAGE_PATCH": {
-    "main": "./_dist/index.js",
-    "exports": {
-      ".": "./_dist/index.js",
-      "./*": "./_dist/*",
-      "./package.json": "./package.json"
-    },
-    "typesVersions": {
-      ">=3.6": {
-        "*": [
-          "./_dist/*"
-        ]
-      }
-    }
+  "packageJsonUtilsConfig": {
+    "distDir": "./dist",
+    "directoryIndexFiles": [
+      "index.ts",
+      "index.tsx",
+      "index.d.ts",
+      "index.js",
+      "index.jsx"
+    ]
   },
   "repository": "https://github.com/radist2s/workspace-test",
   "scripts": {
     "dev": "yarn clean",
-    "clean": "rimraf ./_dist && yarn clean:revert-patch-exports",
+    "clean": "rimraf ./dist && yarn clean:revert-patch-exports",
     "clean:revert-patch-exports": "node ./copyDistPackageJson.js --revert-dist-exports",
     "build": "tsc && yarn build:patch-exports",
     "build:patch-exports": "node ./copyDistPackageJson.js --create-dist --patch-dist-exports",
-    "build:copy-docs": "cpy './*.md' '!_dist/*' _dist",
+    "build:copy-docs": "cpy './*.md' '!dist/*' dist",
     "precommit:validate-package-json": "node ./copyDistPackageJson.js --validate-input-package-json",
     "test": "vitest run"
   },

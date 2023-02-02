@@ -1,22 +1,37 @@
-name: Node.js Package
+name: Release
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  publish-gpr:
+  release:
+    name: Release
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
-          registry-url: https://npm.pkg.github.com/
-      - run: yarn install
-      - run: npm publish
+          node-version: 16.x
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build Dependencies
+        run: yarn build
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          # This expects you to have a script called release which does a build for your packages and calls changeset publish
+          publish: yarn release
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
