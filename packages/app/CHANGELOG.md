@@ -1,5 +1,16 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 1.0.13
+
+### Patch Changes
+
+- 184634d: test
+- a8aeb19: changed changeset config
+- 4542021: added changeset scripts
+- a8aeb19: test 4
+- 2eedc5b: test commit
+- 533b6e7: test commit 3
+
 ## 1.0.12
 
 ### Patch Changes
