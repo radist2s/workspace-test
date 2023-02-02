@@ -1,5 +1,12 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 1.0.16
+
+### Patch Changes
+
+- f212050: release drafter config added
+- 1ac04bb: test9
+
 ## 1.0.15
 
 ### Patch Changes
