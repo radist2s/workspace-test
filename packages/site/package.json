@@ -10,6 +10,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "repository": "https://github.com/radist2s/workspace-test",
   "type": "module",
   "dependencies": {
     "@radist2s/app": "workspace:^",

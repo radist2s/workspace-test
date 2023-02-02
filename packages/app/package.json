@@ -17,6 +17,7 @@
       }
     }
   },
+  "repository": "https://github.com/radist2s/workspace-test",
   "scripts": {
     "dev": "yarn clean",
     "clean": "rimraf ./_dist && yarn clean:revert-patch-exports",

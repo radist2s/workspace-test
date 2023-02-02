@@ -20,7 +20,7 @@
     "lerna": "^6.4.1",
     "prettier": "^2.8.3"
   },
-  "repository": "radist2/workspace-test",
+  "repository": "https://github.com/radist2s/workspace-test",
   "author": "Alex <radist2s@gmail.com>",
   "auto": {
     "plugins": [
