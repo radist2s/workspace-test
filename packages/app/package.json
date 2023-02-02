@@ -1,7 +1,7 @@
 {
   "name": "@radist2s/app",
   "private": true,
-  "version": "1.0.14",
+  "version": "1.0.15",
   "packageJsonUtilsConfig": {
     "distDir": "./dist",
     "directoryIndexFiles": [
