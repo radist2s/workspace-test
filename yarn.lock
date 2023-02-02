@@ -2775,6 +2775,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@radist2s/workspace-test@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@radist2s/workspace-test@workspace:."
+  dependencies:
+    "@changesets/cli": ^2.26.0
+    auto: ^10.37.6
+    husky: ^8.0.3
+    jest: ^29.3.1
+    lerna: ^6.4.1
+    prettier: ^2.8.3
+  languageName: unknown
+  linkType: soft
+
 "@sinclair/typebox@npm:^0.24.1":
   version: 0.24.51
   resolution: "@sinclair/typebox@npm:0.24.51"
@@ -10868,19 +10881,6 @@ __metadata:
   checksum: 3d927f3c95d0ad990968da54c0ad8cde2801d8e91006cd7474c26e6b742cc8557250ce495c9732b2f9db1f903601cb74ec282e0f122ee0d02d7abe81e150eea8
   languageName: node
   linkType: hard
-
-"workspace-test@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "workspace-test@workspace:."
-  dependencies:
-    "@changesets/cli": ^2.26.0
-    auto: ^10.37.6
-    husky: ^8.0.3
-    jest: ^29.3.1
-    lerna: ^6.4.1
-    prettier: ^2.8.3
-  languageName: unknown
-  linkType: soft
 
 "wrap-ansi@npm:^6.2.0":
   version: 6.2.0
