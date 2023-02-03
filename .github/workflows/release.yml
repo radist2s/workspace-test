@@ -23,9 +23,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          registry-url: 'https://npm.pkg.github.com'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Dependencies
         uses: actions/cache@v3
@@ -47,5 +44,5 @@ jobs:
           publish: yarn release
           createGithubReleases: true
         env:
-#          NPM_TOKEN: ${{ secrets.PACKAGES_REGISTRY_TOKEN }}
+          NPM_TOKEN: ${{ secrets.PACKAGES_REGISTRY_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
