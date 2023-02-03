@@ -1,5 +1,13 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 1.0.34
+
+### Patch Changes
+
+- a5f1ab2: Change button title
+- Updated dependencies [a5f1ab2]
+  - @radist2s/app@2.0.1
+
 ## 1.0.33
 
 ### Patch Changes

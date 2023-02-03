@@ -1,5 +1,11 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 2.0.1
+
+### Patch Changes
+
+- a5f1ab2: Change button title
+
 ## 2.0.0
 
 ### Major Changes
