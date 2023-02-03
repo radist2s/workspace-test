@@ -31,14 +31,23 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --immutable
-      - run: yarn build
+
+      - name: Creating .npmrc
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            //npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}
+          EOF
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: yarn release
+          publish: |
+            echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" > $HOME/.npmrc
+            yarn release && (git checkout HEAD -- .npmrc &> /dev/null || rm .npmrc)
           createGithubReleases: false
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
