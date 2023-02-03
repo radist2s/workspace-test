@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -o errexit
 
 echo "//npm.pkg.github.com/:_authToken=$1" > $HOME/.npmrc
 yarn release
