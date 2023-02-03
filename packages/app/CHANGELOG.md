@@ -1,5 +1,11 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 1.0.30
+
+### Patch Changes
+
+- b8b8277: change
+
 ## 1.0.29
 
 ### Patch Changes
