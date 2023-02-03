@@ -40,7 +40,8 @@ jobs:
         uses: changesets/action@v1
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: ./.github/release.sh ${{secrets.GITHUB_TOKEN}}
+          # Changesets requires you to provider the first argument to be a release script
+          publish: ./.github/release.sh ${{secrets.PACKAGES_REGISTRY_TOKEN}}
           createGithubReleases: true
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
