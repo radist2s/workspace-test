@@ -1,5 +1,11 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 2.0.0
+
+### Major Changes
+
+- dcb0ca3: Fixed Button styles
+
 ## 1.0.30
 
 ### Patch Changes
