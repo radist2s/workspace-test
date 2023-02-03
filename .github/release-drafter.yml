@@ -16,3 +16,4 @@ template: |
   $CHANGES
 exclude-contributors:
   - 'github-actions'
+  - 'github-actions[bot]'
