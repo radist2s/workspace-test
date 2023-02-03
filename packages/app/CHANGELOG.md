@@ -1,5 +1,12 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 2.0.2
+
+### Patch Changes
+
+- 869d450: Foobar
+- d5e8d80: Change site readme
+
 ## 2.0.1
 
 ### Patch Changes

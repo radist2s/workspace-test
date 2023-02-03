@@ -1,5 +1,20 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 1.1.0
+
+### Minor Changes
+
+- 498461f: Minor
+
+### Patch Changes
+
+- 869d450: Foobar
+- d5e8d80: Change site readme
+- 895b9a8: Foo
+- Updated dependencies [869d450]
+- Updated dependencies [d5e8d80]
+  - @radist2s/app@2.0.2
+
 ## 1.0.34
 
 ### Patch Changes
