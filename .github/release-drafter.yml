@@ -14,3 +14,5 @@ template: |
   ## Changes
 
   $CHANGES
+exclude-contributors:
+  - 'github-actions'
