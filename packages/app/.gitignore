@@ -1,1 +1,4 @@
 /dist
+
+# Used for publishing packages on CI/CD side
+.npmrc
