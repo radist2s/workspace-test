@@ -40,11 +40,8 @@ jobs:
         uses: changesets/action@v1
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: |
-            echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" > $HOME/.npmrc && \
-            yarn release && \
-            (git checkout HEAD -- .npmrc &> /dev/null || rm .npmrc)
-          createGithubReleases: false
+          publish: ./.github/release.sh ${{secrets.GITHUB_TOKEN}}
+          createGithubReleases: true
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
