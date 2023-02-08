@@ -1,5 +1,11 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 1.1.1
+
+### Patch Changes
+
+- 85c7847: changed foobar
+
 ## 1.1.0
 
 ### Minor Changes
