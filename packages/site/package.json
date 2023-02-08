@@ -1,6 +1,5 @@
 {
   "name": "@radist2s/site",
-  "private": true,
   "version": "1.1.2",
   "main": "index.js",
   "license": "MIT",
