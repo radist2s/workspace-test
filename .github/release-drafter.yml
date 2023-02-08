@@ -17,3 +17,5 @@ template: |
 exclude-contributors:
   - 'github-actions'
   - 'github-actions[bot]'
+  - '[bot]'
+  - 'bot'
