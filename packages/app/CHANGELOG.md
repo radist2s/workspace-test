@@ -1,5 +1,11 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 2.0.4
+
+### Patch Changes
+
+- e7de813: asdoa
+
 ## 2.0.3
 
 ### Patch Changes
