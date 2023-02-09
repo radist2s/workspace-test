@@ -1,3 +1,5 @@
+import { Configuration, Project } from "@yarnpkg/core";
+import YarnpkgPluginPack from "@yarnpkg/plugin-pack";
 import fs from "fs";
 import path from "path";
 
@@ -296,6 +298,54 @@ function errorHandler(error) {
   process.exit(1);
 }
 
+async function resolveWorkspacesPakageJsonDependenciesVesrions() {
+  const configuration = await Configuration.find(
+    process.cwd(),
+    {
+      modules: new Map([["@yarnpkg/plugin-pack", YarnpkgPluginPack]]),
+      plugins: new Set(["@yarnpkg/plugin-pack"]),
+    },
+    {
+      strict: false,
+      useRc: false,
+    }
+  );
+
+  const project = new Project(configuration.projectCwd, { configuration });
+
+  await project.setupWorkspaces();
+
+  const workspaces = project.workspaces.filter(
+    (wsp) => wsp !== project.topLevelWorkspace
+  );
+
+  workspaces.map(async (workspace) => {
+    const packageJsonPublishFields =
+      await YarnpkgPluginPack.packUtils.genPackageManifest(workspace);
+    const packageJsonPublishDependencyFields = Object.fromEntries(
+      Object.entries(packageJsonPublishFields).filter(([field]) => {
+        return field === "dependencies" || field.endsWith("Dependencies");
+      })
+    );
+
+    const packageJsonFields = {
+      ...workspace.manifest.raw,
+      ...packageJsonPublishDependencyFields,
+    };
+
+    const packageJsonPath = path.join(workspace.cwd, "package.json");
+    const packageJsonRaw = await fs.promises.readFile(packageJsonPath, "utf8");
+
+    await fs.promises.writeFile(
+      packageJsonPath,
+      `${JSON.stringify(packageJsonFields, null, 2)}${getPackageJsonEndOfFile(
+        packageJsonRaw
+      )}`,
+      "utf8"
+    );
+  });
+}
+
 async function run() {
   try {
     if (process.argv.includes("--create-dist")) {
@@ -303,6 +353,9 @@ async function run() {
     }
     if (process.argv.includes("--patch-dist-exports")) {
       await patchPackageJsonDistExports();
+    }
+    if (process.argv.includes("--resolve-dist-dependencies")) {
+      await resolveWorkspacesPakageJsonDependenciesVesrions();
     }
 
     if (process.argv.includes("--revert-dist-exports")) {

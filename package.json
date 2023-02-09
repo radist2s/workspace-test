@@ -11,10 +11,15 @@
     "build": "yarn workspace @radist2s/app run build",
     "release": "yarn workspace @radist2s/app run build && changeset publish",
     "start": "node src/index.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "debug": "node ./test.mjs",
+    "debug-publish": "yarn workspace @radist2s/site npm publish"
   },
   "packageManager": "yarn@3.3.1",
   "devDependencies": {
+    "@yarnpkg/cli": "^3.4.1",
+    "@yarnpkg/core": "^3.4.0",
+    "@yarnpkg/plugin-pack": "^3.1.4",
     "auto": "^10.37.6",
     "husky": "^8.0.3",
     "jest": "^29.3.1",
