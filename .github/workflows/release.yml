@@ -13,6 +13,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
+    permissions: write-all
     name: Release
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +42,7 @@ jobs:
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
           # Changesets requires you to provider the first argument to be a release script
-          publish: .github/release.sh ${{ secrets.PACKAGES_REGISTRY_TOKEN }}
+          publish: .github/release.sh ${{ secrets.GITHUB_TOKEN }}
           createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
