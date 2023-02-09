@@ -18,6 +18,7 @@
     "clean:revert-patch-exports": "node ./copyDistPackageJson.js --revert-dist-exports",
     "build": "tsc && yarn build:patch-exports",
     "build:patch-exports": "node ./copyDistPackageJson.js --create-dist --patch-dist-exports",
+    "build:paths-dependencies": "node ./copyDistPackageJson.js --resolve-dist-dependencies",
     "build:copy-docs": "cpy './*.md' '!dist/*' dist",
     "precommit:validate-package-json": "node ./copyDistPackageJson.js --validate-input-package-json",
     "test": "vitest run"
