@@ -1,5 +1,11 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 2.0.5
+
+### Patch Changes
+
+- fd394e1: asd
+
 ## 2.0.4
 
 ### Patch Changes
