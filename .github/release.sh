@@ -8,7 +8,7 @@ else
 fi
 
 yarn workspace @radist2s/app run build
-yarn workspace @radist2s/app run build:paths-dependencies
+yarn workspace @radist2s/app run build:patch-dependencies
 yarn changeset publish
 
 if [ "$GITHUB_ACTIONS" != "true" ]; then
