@@ -11,9 +11,13 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+  packages: write
+  contents: write
+  pull-requests: write
+
 jobs:
   release:
-    permissions: write-all
     name: Release
     runs-on: ubuntu-latest
     steps:
