@@ -1,5 +1,11 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 2.0.7
+
+### Patch Changes
+
+- d24c02c: ado
+
 ## 2.0.6
 
 ### Patch Changes
