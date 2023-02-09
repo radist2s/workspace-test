@@ -1,5 +1,12 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 1.1.10
+
+### Patch Changes
+
+- Updated dependencies [25ebd8a]
+  - @radist2s/app@2.0.8
+
 ## 1.1.9
 
 ### Patch Changes
