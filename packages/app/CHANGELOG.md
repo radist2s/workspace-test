@@ -1,5 +1,11 @@
 # v1.0.8 (Mon Jan 16 2023)
 
+## 2.0.12
+
+### Patch Changes
+
+- 0f36ab3: Garbage Collector
+
 ## 2.0.11
 
 ### Patch Changes
