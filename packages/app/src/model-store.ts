@@ -1,17 +1,22 @@
 import { JSONSchema4 } from "json-schema";
+import { detailedDiff } from "deep-object-diff";
 
-const modelKey = Symbol();
+const modelKey = Symbol("NodeIdentifier");
 type ModelKey = typeof modelKey;
+type ModelSchemaSymbol = symbol;
+type ModelUniqKey = string | number;
 
-type ModelRef<T> = { [key in ModelKey]: Model<T> };
+type ModelRelation = {
+  [key in ModelKey]: [ModelSchemaSymbol, ModelUniqKey] | [ModelSchemaSymbol];
+};
 
 type ModelSchema<T> = T extends Array<infer ArrType>
   ? Array<ModelSchema<ArrType>>
   : T extends {}
   ? {
       [key in keyof T]?: T[key] extends Array<infer ModelArrType>
-        ? Array<ModelSchema<ModelArrType>> | Array<ModelRef<ModelArrType>>
-        : ModelRef<T[key]> | ModelSchema<T[key]>;
+        ? Array<ModelSchema<ModelArrType>> | Array<ModelRelation>
+        : ModelRelation | ModelSchema<T[key]>;
     }
   : never;
 
@@ -22,10 +27,20 @@ type Model<T> = {
   snapshot: T;
   snapshotSchema:
     | ModelSchema<T>
-    | ModelRef<T>
-    | (ModelSchema<T> | ModelRef<T>)[]
+    | ModelRelation
+    | (ModelSchema<T> | ModelRelation)[]
     | null;
 };
+
+type SnapshotSchema<T, S> = T extends Array<infer ArrType>
+  ? Array<SnapshotSchema<ArrType, S>>
+  : T extends {}
+  ? {
+      [key in keyof T]?: T[key] extends Array<infer ModelArrType>
+        ? Array<SnapshotSchema<ModelArrType, S>> | Array<ModelArrType>
+        : S | SnapshotSchema<T[key], S>;
+    }
+  : never;
 
 type User = { id: number };
 
@@ -56,7 +71,7 @@ let m: Model<{
   },
 };
 
-type Context = {
+export type Context = {
   store: {
     definitions: {
       [def: string]: JSONSchema4;
@@ -70,12 +85,11 @@ type Context = {
             };
           };
     };
-    subscribe: (callback: (path: any) => void) => () => void;
   };
   getModelKeyProperty(schema: Pick<JSONSchema4, "$ref">): string;
 };
 
-const createModel = <T>(
+export const createModel = <T>(
   data: T,
   { schema, schemaSymbol }: { schema: JSONSchema4; schemaSymbol?: symbol },
   ctx: Context
@@ -101,9 +115,7 @@ const createModel = <T>(
       ...store.definitions[schema.id],
       ...schema,
     };
-  }
-
-  if (schema.$ref) {
+  } else if (schema.$ref) {
     const idProperty = getModelKeyProperty(schema);
     if (data && typeof data === "object" && idProperty in data) {
       const modelId = data[idProperty as keyof typeof data];
@@ -128,40 +140,100 @@ const createModel = <T>(
       if (model) {
         const newSnapshotSchema = visitor(data, schema, {
           ...ctx,
-          rootModel: model,
+          visitorCallback(schema, itemData, rootSchema) {
+            const model = createModel(
+              itemData,
+              {
+                schema,
+              },
+              ctx
+            );
+            const idProperty = getModelKeyProperty(schema);
+            const modelId = model?.snapshot
+              ? (model.snapshot[idProperty as keyof typeof model.snapshot] as
+                  | string
+                  | number)
+              : undefined;
+
+            if (!modelId)
+              throw new Error(
+                `No modelId for the schema ${JSON.stringify(schema)}`
+              );
+
+            if (model)
+              return {
+                [modelKey]: [Symbol.for(schema.$ref!), modelId],
+              };
+          },
         });
+
+        // const difff = (
+        //   snapshotSchema: Model<T>["snapshotSchema"],
+        //   newSnapshotSchema: Model<T>["snapshotSchema"]
+        // ) => {
+        //   if (Array.isArray(snapshotSchema)) {
+        //   } else if (snapshotSchema && typeof snapshotSchema === "object") {
+        //     if (modelKey in snapshotSchema) {
+        //     }
+        //   }
+        //
+        //   // if (
+        //   //   !existingModel.snapshot ||
+        //   //   typeof existingModel.snapshot !== "object"
+        //   // )
+        //   //   return;
+        //   // if (!newData || typeof newData !== "object") return;
+        //   //
+        //   // const diff = detailedDiff(existingModel.snapshot, newData);
+        //   //
+        //   // Object.entries(diff.deleted).forEach(([key, deleted]) => {});
+        // };
       } else {
         model = {
           name: modelSchemaSymbol,
           snapshot: data,
           snapshotSchema: visitor(data, schema, {
             ...ctx,
-            subscribe: store.subscribe,
+            visitorCallback(schema, itemData, rootSchema) {
+              const model = createModel(
+                itemData,
+                {
+                  schema,
+                },
+                ctx
+              );
+              const idProperty = getModelKeyProperty(schema);
+              const modelId = model?.snapshot
+                ? (model.snapshot[idProperty as keyof typeof model.snapshot] as
+                    | string
+                    | number)
+                : undefined;
+
+              if (!modelId)
+                throw new Error(
+                  `No modelId for the schema ${JSON.stringify(schema)}`
+                );
+
+              if (model)
+                return {
+                  [modelKey]: [Symbol.for(schema.$ref!), modelId],
+                };
+            },
           }),
         };
-      }
 
-      const notifier = subscribe(() => {
-        if (!model.listeners) return;
-        const listenerIndex = model.listeners.indexOf(notifier);
-        if (listenerIndex === -1) return;
-        model.listeners.splice(listenerIndex, 1);
-      });
-
-      if (!model.listeners) model.listeners = [];
-      model.listeners.push(notifier);
-
-      if (!("model" in schemaModels)) {
-        if (!schemaModels.models) schemaModels.models = {};
-        schemaModels.models[modelId as keyof (typeof schemaModels)["models"]] =
-          model;
+        if (!(modelSchemaSymbol in store.models)) {
+          store.models[modelSchemaSymbol] = { models: { [modelId]: model } };
+        } else {
+          store.models[modelSchemaSymbol][modelId] = model;
+        }
       }
 
       return model;
     }
   } else if (
-    schema.type === "object" ||
-    schema.type === "array" ||
+    schema.properties ||
+    schema.items ||
     schema.anyOf ||
     schema.oneOf
   ) {
@@ -170,19 +242,34 @@ const createModel = <T>(
       snapshot: data,
       snapshotSchema: visitor(data, schema, {
         ...ctx,
-        subscribe: store.subscribe,
+        visitorCallback(schema, itemData, rootSchema) {
+          const model = createModel(
+            itemData,
+            {
+              schema,
+            },
+            ctx
+          );
+
+          const idProperty = getModelKeyProperty(schema);
+          const modelId = model?.snapshot
+            ? (model.snapshot[idProperty as keyof typeof model.snapshot] as
+                | string
+                | number)
+            : undefined;
+
+          if (!modelId)
+            throw new Error(
+              `No modelId for the schema ${JSON.stringify(schema)}`
+            );
+
+          if (model)
+            return {
+              [modelKey]: [Symbol.for(schema.$ref!), modelId],
+            };
+        },
       }),
     };
-
-    const notifier = subscribe(() => {
-      if (!model.listeners) return;
-      const listenerIndex = model.listeners.indexOf(notifier);
-      if (listenerIndex === -1) return;
-      model.listeners.splice(listenerIndex, 1);
-    });
-
-    if (!model.listeners) model.listeners = [];
-    model.listeners.push(notifier);
 
     if (modelSchemaSymbol in store.models) {
       throw new Error(
@@ -200,16 +287,24 @@ const createModel = <T>(
 
 const putModel = <T>(model: Model<T>, data: Partial<T>, ctx: Context) => {};
 
-export const visitor = <T>(
+export const visitor = <T, S>(
   data: T,
   schema: JSONSchema4,
-  ctx: Context & { rootModel: Model<any> }
-): ModelSchema<T> | ModelRef<T> | (ModelSchema<T> | ModelRef<T>)[] | null => {
+  ctx: Context & {
+    visitorCallback(
+      refSchema: JSONSchema4,
+      data: unknown,
+      rootSchema: JSONSchema4
+    ): S | undefined;
+  }
+): SnapshotSchema<T, Model<any>> | null => {
   const strictTypeCheck = (check: boolean) => check || true;
 
   if (schema.$ref) {
     return null;
   }
+
+  const visitorCallback = ctx.visitorCallback;
 
   if (schema.items && strictTypeCheck(schema.type === "array")) {
     if (!Array.isArray(data))
@@ -219,7 +314,7 @@ export const visitor = <T>(
         )}, schema is ${JSON.stringify(schema)}`
       );
 
-    let fields: (ModelSchema<T> | ModelRef<T>)[] | undefined;
+    let fields: SnapshotSchema<T, Model<any>>[] | undefined;
 
     const itemSchema = Array.isArray(schema.items)
       ? schema.items.find(
@@ -230,18 +325,11 @@ export const visitor = <T>(
     if (itemSchema) {
       data.forEach((itemData, itemDataIndex) => {
         if (itemSchema.$ref) {
-          if (!fields) fields = [];
-          const model = createModel(
-            itemData,
-            {
-              schema: { $ref: itemSchema.$ref },
-            },
-            ctx
-          );
-          if (model)
-            fields[itemDataIndex] = {
-              [modelKey]: model,
-            };
+          const result = visitorCallback(itemSchema, itemData, schema);
+          if (result) {
+            if (!fields) fields = [];
+            fields[itemDataIndex] = result;
+          }
         } else {
           const result = visitor(itemData, itemSchema, ctx);
           if (result) {
@@ -260,7 +348,7 @@ export const visitor = <T>(
         `data must be an object for schema ${JSON.stringify(schema)}`
       );
 
-    let fields: (ModelSchema<T> | ModelRef<T>) | undefined;
+    let fields: (ModelSchema<T> | ModelRelation<T>) | undefined;
 
     for (let propertyKey of Object.keys(schema.properties)) {
       const propertySchema = schema.properties[propertyKey];
@@ -277,20 +365,11 @@ export const visitor = <T>(
             )}`
           );
 
-        const model = createModel(
-          propertyData,
-          {
-            schema: { $ref: propertySchema.$ref },
-          },
-          ctx
-        );
-        if (model) {
-          const modelSchema = {
-            [modelKey]: model,
-          };
+        let model = visitorCallback(propertySchema, propertyData, schema);
 
+        if (model) {
           // @ts-ignore
-          fields = { [propertyKey]: modelSchema, ...fields };
+          fields = { [propertyKey]: model, ...fields };
         }
       } else {
         const result = visitor(propertyData, propertySchema, ctx);
@@ -306,20 +385,11 @@ export const visitor = <T>(
     const cases = schema.oneOf || schema.anyOf;
     const isNullable = cases?.find(({ type }) => type === "null");
     if (isNullable && data === null) return null;
-    const $ref = cases?.find(({ $ref }) => $ref)?.$ref;
+    const refSchema = cases?.find(({ $ref }) => $ref);
 
-    if ($ref) {
-      const model = createModel(
-        data,
-        {
-          schema: { $ref },
-        },
-        ctx
-      );
-      if (!model) return null;
-      return {
-        [modelKey]: model,
-      };
+    if (refSchema) {
+      const model = visitorCallback(refSchema, data, schema);
+      return model ?? null;
     }
 
     const oneOfSchema = cases?.find(({ type }) => {
