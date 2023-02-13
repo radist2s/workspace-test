@@ -39,6 +39,7 @@ jobs:
             .yarn/install-state.gz
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --immutable
+      - run: yarn changeset status --since=master
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
